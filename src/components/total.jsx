@@ -1,6 +1,6 @@
-const Total = ({exercises1, exercises2, exercises3}) => {
+const Total = ({total}) => {
   return (
-    <div>Number of exercises {exercises1 + exercises2 + exercises3}</div>
+    <div>Number of exercises {total}</div>
   )
 }
 
