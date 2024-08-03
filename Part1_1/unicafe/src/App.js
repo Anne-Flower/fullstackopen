@@ -5,13 +5,15 @@ import Statistics from "./components/statistics";
 const App = () => {
   // enregistrer les clics de chaque bouton dans un état différent
   const [isClickedInGeneral, setIsClickedInGeneral] = useState(false);
+  const [isNotClicked, setIsNotClicked] = useState(true);
   const [allClicks, setAllClicks] = useState([]);
   const [good, setGood] = useState(0);
   const handleClickGood = () => {
     setGood(good + 1);
     console.log("well done baby ", good + 1);
     setAllClicks([...allClicks, "good"]);
-    setIsClickedInGeneral(true)
+    setIsClickedInGeneral(true);
+    setIsNotClicked(false);
     // console.log(allClicks);
   };
   const [neutral, setNeutral] = useState(0);
@@ -19,16 +21,16 @@ const App = () => {
     console.log("well done baby ", neutral + 1);
     setNeutral(neutral + 1);
     setAllClicks([...allClicks, "neutral"]);
-    setIsClickedInGeneral(true)
-
+    setIsClickedInGeneral(true);
+    setIsNotClicked(false);
   };
   const [bad, setBad] = useState(0);
   const handleClickBad = () => {
     console.log("well done baby ", bad + 1);
     setBad(bad + 1);
     setAllClicks([...allClicks, "bad"]);
-    setIsClickedInGeneral(true)
-
+    setIsClickedInGeneral(true);
+    setIsNotClicked(false);
   };
 
   const name = {
@@ -51,22 +53,32 @@ const App = () => {
   };
 
   return (
-    <main>
-      <h1> Give feedback</h1>
-      <div id="buttons">
-        <Button feedback={name.buttonGood} onClick={handleClickGood}></Button>
-        <Button feedback={name.buttonNeutral} onClick={handleClickNeutral} />
-        <Button feedback={name.buttonBad} onClick={handleClickBad} />
-      </div>
-      {isClickedInGeneral && (
-        <Statistics
-          good={good}
-          neutral={neutral}
-          bad={bad}
-          allClicks={allClicks}
-        />
-      )}
-    </main>
+    <>
+      <main>
+        <h1> Give feedback</h1>
+        <div id="buttons">
+          <Button feedback={name.buttonGood} onClick={handleClickGood}></Button>
+          <Button feedback={name.buttonNeutral} onClick={handleClickNeutral} />
+          <Button feedback={name.buttonBad} onClick={handleClickBad} />
+        </div>
+
+        {isNotClicked && (
+          <>
+            <h1> Statistics</h1>
+            <p>no feedback</p>
+          </>
+        )}
+
+        {isClickedInGeneral && (
+          <Statistics
+            good={good}
+            neutral={neutral}
+            bad={bad}
+            allClicks={allClicks}
+          />
+        )}
+      </main>
+    </>
   );
 };
 
