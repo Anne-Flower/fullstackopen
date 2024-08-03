@@ -1,6 +1,5 @@
-
-const Total = ({ parts }) => {
-  const sum = parts.reduce((sum, part) => sum + part.name, 0);
-  return <div>Number of exercises {sum}</div>;
+const Total = ({ good, neutral, bad }) => {
+  const sum = good + neutral + bad;
+  return <div id="sum"> {sum}</div>;
 };
 export default Total;

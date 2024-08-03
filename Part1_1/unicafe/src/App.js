@@ -1,6 +1,6 @@
 import { useState } from "react";
 import Button from "./components/button";
-import Part from "./components/parts";
+import Statistics from "./components/statistics";
 
 const App = () => {
   // enregistrer les clics de chaque bouton dans un état différent
@@ -9,20 +9,20 @@ const App = () => {
   const handleClickGood = () => {
     setGood(good + 1);
     console.log("well done baby ", good + 1);
-    setAllClicks(allClicks);
-    console.log(allClicks);
+    setAllClicks([...allClicks, "good"]);
+    // console.log(allClicks);
   };
   const [neutral, setNeutral] = useState(0);
   const handleClickNeutral = () => {
     console.log("well done baby ", neutral + 1);
     setNeutral(neutral + 1);
-    setAllClicks(allClicks);
+    setAllClicks([...allClicks, "neutral"]);
   };
   const [bad, setBad] = useState(0);
   const handleClickBad = () => {
     console.log("well done baby ", bad + 1);
     setBad(bad + 1);
-    setAllClicks(allClicks);
+    setAllClicks([...allClicks, "bad"]);
   };
 
   const name = {
@@ -30,18 +30,36 @@ const App = () => {
     buttonNeutral: "neutral",
     buttonBad: "bad",
   };
+  const calculateAverage = () => {
+    const totalFeedbacks = good + neutral + bad;
+    if (totalFeedbacks === 0) return 0;
+    const average = (good - bad) / totalFeedbacks;
+    return average.toFixed(10);
+  };
+
+  const CalculatePercentagePositive = () => {
+    const totalFeedbacks = good + neutral + bad;
+    if (totalFeedbacks === 0) return 0;
+    const positivePercentage = (good / totalFeedbacks) * 100;
+    return positivePercentage.toFixed(10);
+  };
 
   return (
-    <div>
+    <main>
       <h1> Give feedback</h1>
-      <Button feedback={name.buttonGood} onClick={handleClickGood}></Button>
-      <Button feedback={name.buttonNeutral} onClick={handleClickNeutral} />
-      <Button feedback={name.buttonBad} onClick={handleClickBad} />
-      <h1>stactistics</h1>
-      <Part name={name.buttonGood} number={good} />
-      <Part name={name.buttonNeutral} number={neutral} />
-      <Part name={name.buttonBad} number={bad} />
-    </div>
+      <div id="buttons">
+        <Button feedback={name.buttonGood} onClick={handleClickGood}></Button>
+        <Button feedback={name.buttonNeutral} onClick={handleClickNeutral} />
+        <Button feedback={name.buttonBad} onClick={handleClickBad} />
+      </div>
+
+      <Statistics
+        good={good}
+        neutral={neutral}
+        bad={bad}
+        allClicks={allClicks}
+      />
+    </main>
   );
 };
 
