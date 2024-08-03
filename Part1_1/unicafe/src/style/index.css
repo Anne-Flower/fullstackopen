@@ -1,10 +1,10 @@
-#total {
+ /* #total {
   display: flex;
   flex-direction: row;
   text-align: center;
   align-items: center;
   
-}
+} */
 #buttons {
   display: flex;
   flex-direction: row;
@@ -15,6 +15,6 @@
   padding-bottom: 60px;
 
 }
-#sum {
+/* #sum {
   padding-left: 4px;
-}
+}  */

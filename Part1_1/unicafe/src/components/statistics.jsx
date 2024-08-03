@@ -1,6 +1,6 @@
 import StatisticLine from "./statisticLine";
 import Total from "./total";
-import History from "./history";
+// import History from "./history";
 
 const Statistics = ({ good, neutral, bad, allClicks }) => {
   const calculateAverage = () => {
@@ -19,18 +19,40 @@ const Statistics = ({ good, neutral, bad, allClicks }) => {
   return (
     <div>
       <h1>STATISTICS</h1>
-      <StatisticLine name="good" number={good} />
-      <StatisticLine name="neutral" number={neutral} />
-      <StatisticLine name="bad" number={bad} />
-      <div id="total">
-        <p>
-          {good}+{neutral}+{bad} ={" "}
-        </p>
-        <Total good={good} neutral={neutral} bad={bad} />
-      </div>
-      <History text="all in order " clicked={allClicks} />
-      <div> Average {calculateAverage()}</div>
-      <div>Percentage {CalculatePercentagePositive()}</div>
+
+      <table>
+        <tbody>
+          <StatisticLine name="good" number={good} />
+          <StatisticLine name="neutral" number={neutral} />
+          <StatisticLine name="bad" number={bad} />
+        </tbody>
+      </table>
+      <table id="total">
+        <tbody>
+          <tr>
+            <td>
+              <p>
+                {good}+{neutral}+{bad} ={""}
+              </p>
+            </td>
+
+            <Total good={good} neutral={neutral} bad={bad} />
+          </tr>
+        </tbody>
+      </table>
+      <table>
+        <tbody>
+          <tr>
+            {/* <History text="all in order " clicked={allClicks} /> */}
+            <td>Average</td>
+            <td>{calculateAverage()}</td>
+          </tr>
+          <tr>
+            <td>Percentage</td>
+            <td>{CalculatePercentagePositive()}</td>
+          </tr>
+        </tbody>
+      </table>
     </div>
   );
 };

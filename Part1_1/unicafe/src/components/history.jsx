@@ -1,10 +1,13 @@
-const History = ({text, clicked}) => {
-  if (clicked.length === 0) {return <div>You have to push buttons to access feedbacks</div>};
+const History = ({ text, clicked }) => {
+  if (clicked.length === 0) {
+    return <td>You have to push buttons to access feedbacks</td>;
+  }
   return (
-    <div>
-     {text}: {clicked.join(' ')}
-    </div>
-  )
+    <td>
+      {text}
+      {clicked.join(" ")}
+    </td>
+  );
 };
 
 export default History;

@@ -1,5 +1,5 @@
 const Total = ({ good, neutral, bad }) => {
   const sum = good + neutral + bad;
-  return <div id="sum"> {sum}</div>;
+  return <td id="sum"> {sum}</td>;
 };
 export default Total;

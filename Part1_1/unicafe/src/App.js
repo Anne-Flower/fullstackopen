@@ -57,6 +57,7 @@ const App = () => {
       <main>
         <h1> Give feedback</h1>
         <div id="buttons">
+          
           <Button feedback={name.buttonGood} onClick={handleClickGood}></Button>
           <Button feedback={name.buttonNeutral} onClick={handleClickNeutral} />
           <Button feedback={name.buttonBad} onClick={handleClickBad} />
