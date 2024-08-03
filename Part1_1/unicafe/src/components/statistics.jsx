@@ -1,4 +1,4 @@
-import Part from "./parts";
+import StatisticLine from "./statisticLine";
 import Total from "./total";
 import History from "./history";
 
@@ -19,9 +19,9 @@ const Statistics = ({ good, neutral, bad, allClicks }) => {
   return (
     <div>
       <h1>STATISTICS</h1>
-      <Part name="good" number={good} />
-      <Part name="neutral" number={neutral} />
-      <Part name="bad" number={bad} />
+      <StatisticLine name="good" number={good} />
+      <StatisticLine name="neutral" number={neutral} />
+      <StatisticLine name="bad" number={bad} />
       <div id="total">
         <p>
           {good}+{neutral}+{bad} ={" "}
