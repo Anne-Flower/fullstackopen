@@ -4,12 +4,14 @@ import Statistics from "./components/statistics";
 
 const App = () => {
   // enregistrer les clics de chaque bouton dans un état différent
+  const [isClickedInGeneral, setIsClickedInGeneral] = useState(false);
   const [allClicks, setAllClicks] = useState([]);
   const [good, setGood] = useState(0);
   const handleClickGood = () => {
     setGood(good + 1);
     console.log("well done baby ", good + 1);
     setAllClicks([...allClicks, "good"]);
+    setIsClickedInGeneral(true)
     // console.log(allClicks);
   };
   const [neutral, setNeutral] = useState(0);
@@ -17,12 +19,16 @@ const App = () => {
     console.log("well done baby ", neutral + 1);
     setNeutral(neutral + 1);
     setAllClicks([...allClicks, "neutral"]);
+    setIsClickedInGeneral(true)
+
   };
   const [bad, setBad] = useState(0);
   const handleClickBad = () => {
     console.log("well done baby ", bad + 1);
     setBad(bad + 1);
     setAllClicks([...allClicks, "bad"]);
+    setIsClickedInGeneral(true)
+
   };
 
   const name = {
@@ -52,13 +58,14 @@ const App = () => {
         <Button feedback={name.buttonNeutral} onClick={handleClickNeutral} />
         <Button feedback={name.buttonBad} onClick={handleClickBad} />
       </div>
-
-      <Statistics
-        good={good}
-        neutral={neutral}
-        bad={bad}
-        allClicks={allClicks}
-      />
+      {isClickedInGeneral && (
+        <Statistics
+          good={good}
+          neutral={neutral}
+          bad={bad}
+          allClicks={allClicks}
+        />
+      )}
     </main>
   );
 };
