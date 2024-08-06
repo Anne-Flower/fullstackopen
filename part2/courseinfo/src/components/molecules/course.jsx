@@ -1,11 +1,14 @@
 import Header from "../atomes/header";
 import Content from "../atomes/content";
+import Total from "../atomes/total";
 
-const Course = ({course}) => {
+const Course = ({ course }) => {
   return (
     <div>
-      <Header course="Half Stack application development" />
+      <Header course={course.name} />
       <Content parts={course.parts} />
+
+      <Total parts={course.parts} />
     </div>
   );
 };
