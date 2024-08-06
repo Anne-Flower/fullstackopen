@@ -3,6 +3,7 @@ const Header = ({course}) => {
   return (
 
   <div>
+
     {course}
   </div>
 

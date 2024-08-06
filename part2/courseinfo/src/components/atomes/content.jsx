@@ -3,8 +3,10 @@ import Part from "./part";
 const Content = ({ parts }) => {
   return (
     <div>
-      {parts.map((part, index) => (
-        <Part key={index} name={part.name} exercise={part.exercises} />
+      {parts.map(part => (
+        <Part key={part.id} name={part.name} exercises={part.exercises}>
+          
+        </Part>
       ))}
     </div>
   );
