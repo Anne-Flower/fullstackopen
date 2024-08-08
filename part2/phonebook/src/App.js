@@ -6,14 +6,19 @@ const App = () => {
   const [newName, setNewName] = useState("");
   const addName = (event) => {
     event.preventDefault();
-    const nameObject = {
-      id: persons.length + 1,
-      date: new Date().toISOString(),
-      name: newName,
-    };
-    console.log("button clicked", event.target);
-    setPersons(persons.concat(nameObject));
-    setNewName("");
+    const nameExists = persons.some((person) => person.name === newName);
+    if (nameExists) {
+      alert(`${newName} is already added`);
+    } else {
+      const nameObject = {
+        id: persons.length + 1,
+        date: new Date().toISOString(),
+        name: newName,
+      };
+      console.log("button clicked", event.target);
+      setPersons(persons.concat(nameObject));
+      setNewName("");
+    }
   };
   const handleNameChange = (event) => {
     console.log(event.target.value);
