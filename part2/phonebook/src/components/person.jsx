@@ -1,11 +1,11 @@
-const Person = ({person}) => {
+const Person = ({ person }) => {
   return (
     <div>
       <li>
-      {person.name} {person.important ? "(important)" : ""}
-    </li>
+        {person.name} : {person.num}
+      </li>
     </div>
-  )
-}
+  );
+};
 
-export default Person
+export default Person;
