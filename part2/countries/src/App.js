@@ -12,6 +12,11 @@ function App() {
     country.name.common.toLowerCase().includes(searchCountries.toLowerCase())
   );
 
+  const [selectedCountry, setSelectedCountry] = useState(null);
+  const handleSelectedCountryDetails = (country) => {
+    setSelectedCountry(country)
+  }
+
   useEffect(() => {
     console.log("effect");
     axios
@@ -47,10 +52,18 @@ function App() {
         <p>Too many matches</p>
       ) : (
         countriesToShow.map((country) => (
-          <li key={country.cca3}>{country.name.common}</li>
+          <li key={country.cca3}>{country.name.common} <button onClick={() => handleSelectedCountryDetails(country)}>show</button></li>
         ))
       )}
     </ul>
+    {selectedCountry && (
+  <div>
+    <h3>{selectedCountry.name.common}</h3>
+    <p>Capital: {selectedCountry.capital[0]}</p>
+    <p>Area: {selectedCountry.area}</p>
+    <p>Flag: {selectedCountry.flag}</p>
+  </div>
+)}
     </div>
   );
 }
