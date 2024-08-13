@@ -31,7 +31,7 @@ const App = () => {
         id: persons.length + 1,
         date: new Date().toISOString(),
         name: newName,
-        num: newNum,
+        number: newNum,
       };
       console.log(nameObject);
       console.log("button clicked", event.target);
