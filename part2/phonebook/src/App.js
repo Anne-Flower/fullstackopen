@@ -2,8 +2,7 @@ import { useState, useEffect } from "react";
 import Person from "./components/person";
 import Filter from "./components/filter";
 import PersonForm from "./components/personForm";
-import axios from 'axios';
-
+import axios from "axios";
 
 const App = () => {
   const [persons, setPersons] = useState([]);
@@ -12,14 +11,18 @@ const App = () => {
   const [filter, setFilter] = useState("");
 
   useEffect(() => {
-    console.log('effect')
+    console.log("effect");
     axios
-      .get('http://localhost:3001/persons').then(response => {
-        console.log('promise fulfilled')
-        setPersons(response.data)
-        
-      })
-  }, [])
+    .get("http://localhost:3001/persons")
+    .then((response) => {
+      console.log("promise fulfilled");
+      setPersons(response.data) })
+    .catch((error) => {
+        console.error("Error fetching:", error);
+      });
+
+  }, []);
+
 
   const addAll = (event) => {
     event.preventDefault();
@@ -33,12 +36,23 @@ const App = () => {
         name: newName,
         number: newNum,
       };
-      console.log(nameObject);
-      console.log("button clicked", event.target);
-      setPersons(persons.concat(nameObject));
-      setNewName("");
-      setNewNum("");
-    }
+      axios
+      .post('http://localhost:3001/persons', nameObject)
+      .then(response => {
+        setPersons(persons.concat(response.data));
+        setNewName("");
+        setNewNum("");
+      })
+      .catch(error => {
+        console.error('Error adding person:', error);
+      });
+    };
+      // console.log(nameObject);
+      // console.log("button clicked", event.target);
+      // setPersons(persons.concat(nameObject));
+      // setNewName("");
+      // setNewNum("");
+    
   };
 
   const handleNameChange = (event) => {
@@ -56,7 +70,6 @@ const App = () => {
 
   const personsToShow = persons.filter((person) =>
     person.name.toLowerCase().includes(filter.toLowerCase())
-  
   );
   console.log(filter);
 
@@ -66,7 +79,12 @@ const App = () => {
 
       <Filter filter={filter} onFilterChange={handleFilterChange} />
       <form onSubmit={addAll}>
-        <PersonForm newEnterNum={newNum} newEnterName={newName} onStaffChangeName={handleNameChange} onStaffChangeNum={handleNumChange}/>
+        <PersonForm
+          newEnterNum={newNum}
+          newEnterName={newName}
+          onStaffChangeName={handleNameChange}
+          onStaffChangeNum={handleNumChange}
+        />
 
         <div>
           <button type="submit">Add</button>
