@@ -22,16 +22,35 @@ const App = () => {
       });
   }, []);
 
+  const handleDelete = (id) => {
+    const person = persons.find((p) => p.id === id);
+    if (!person) {
+      console.error(`Person with ID ${id} not found`);
+      return;
+    }
+
+    if (window.confirm(`Delete ${person.name}?`)) {
+      personsService
+        .deletePersons(id)
+        .then(() => {
+          setPersons(persons.filter((p) => p.id !== id));
+        })
+        .catch((error) => {
+          console.error("Error deleting person:", error);
+        });
+    }
+  };
+
   const addAll = (event) => {
     event.preventDefault();
-    if (!persons || persons.length === 0) return; // Ajout d'une vérification
+    if (!persons || persons.length === 0) return;
     const nameExists = persons.some((person) => person.name === newName);
     if (nameExists) {
       alert(`${newName} is already added`);
     } else {
       const nameObject = {
-        id: persons.length + 1,
-        date: new Date().toISOString(),
+        // id: persons.length + 1,
+        // date: new Date().toISOString(),
         name: newName,
         number: newNum,
       };
@@ -91,7 +110,11 @@ const App = () => {
       <h2>Numbers</h2>
       <ul>
         {personsToShow.map((person) => (
-          <Person key={person.id} person={person}></Person>
+          <Person
+            key={person.id}
+            person={person}
+            onDelete={handleDelete}
+          ></Person>
         ))}
       </ul>
     </div>
