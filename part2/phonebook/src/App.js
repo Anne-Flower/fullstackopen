@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import Person from "./components/person";
 import Filter from "./components/filter";
 import PersonForm from "./components/personForm";
-import axios from "axios";
+import personsService from "./services/persons";
 
 const App = () => {
   const [persons, setPersons] = useState([]);
@@ -11,21 +11,20 @@ const App = () => {
   const [filter, setFilter] = useState("");
 
   useEffect(() => {
-    console.log("effect");
-    axios
-    .get("http://localhost:3001/persons")
-    .then((response) => {
-      console.log("promise fulfilled");
-      setPersons(response.data) })
-    .catch((error) => {
+    personsService
+      .getAll()
+      .then((response) => {
+        console.log("Full response:", response);
+        setPersons(response);
+      })
+      .catch((error) => {
         console.error("Error fetching:", error);
       });
-
   }, []);
-
 
   const addAll = (event) => {
     event.preventDefault();
+    if (!persons || persons.length === 0) return; // Ajout d'une vérification
     const nameExists = persons.some((person) => person.name === newName);
     if (nameExists) {
       alert(`${newName} is already added`);
@@ -36,23 +35,18 @@ const App = () => {
         name: newName,
         number: newNum,
       };
-      axios
-      .post('http://localhost:3001/persons', nameObject)
-      .then(response => {
-        setPersons(persons.concat(response.data));
-        setNewName("");
-        setNewNum("");
-      })
-      .catch(error => {
-        console.error('Error adding person:', error);
-      });
-    };
-      // console.log(nameObject);
-      // console.log("button clicked", event.target);
-      // setPersons(persons.concat(nameObject));
-      // setNewName("");
-      // setNewNum("");
-    
+
+      personsService
+        .create(nameObject)
+        .then((newPerson) => {
+          setPersons(persons.concat(newPerson));
+          setNewName("");
+          setNewNum("");
+        })
+        .catch((error) => {
+          console.error("Error adding person:", error);
+        });
+    }
   };
 
   const handleNameChange = (event) => {
@@ -65,8 +59,12 @@ const App = () => {
   };
 
   const handleFilterChange = (event) => {
+    console.log("Filter value before update:", filter);
     setFilter(event.target.value);
+    console.log("Filter value after update:", event.target.value);
   };
+  // console.log("Current filter:", filter);
+  // console.log("Persons array:", persons);
 
   const personsToShow = persons.filter((person) =>
     person.name.toLowerCase().includes(filter.toLowerCase())
