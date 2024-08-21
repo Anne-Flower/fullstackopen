@@ -1,9 +1,9 @@
 const PersonForm = ({newEnterNum, newEnterName, onStaffChangeNum, onStaffChangeName}) => {
   return (
-    <div>
+    <p className="personsform">
       name: <input value={newEnterName} onChange={onStaffChangeName} />
       number: <input value={newEnterNum} onChange={onStaffChangeNum} />
-    </div>
+    </p>
   );
 };
 

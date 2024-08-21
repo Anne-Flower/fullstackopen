@@ -36,9 +36,19 @@ const App = () => {
         .deletePersons(id)
         .then(() => {
           setPersons(persons.filter((p) => p.id !== id));
+          setActionMessage(`Deleted ${person.name}`);
+          setTimeout(() => {
+            setActionMessage("");
+          }, 5000);
         })
         .catch((error) => {
           console.error("Error deleting person:", error);
+          setActionMessage(
+            `Information of ${person.name} has already been removed from server`
+          );
+          setTimeout(() => {
+            setActionMessage("");
+          }, 5000);
         });
     }
   };
@@ -55,10 +65,9 @@ const App = () => {
         const updatedPerson = { ...nameExists, number: newNum };
         personsService
           .update(nameExists.id, updatedPerson)
-          .then((returnedPerson) => {
-            setPersons(
-              persons.map((p) => (p.id !== nameExists.id ? p : returnedPerson))
-            );
+          .then(() => {
+            personsService.getAll().then((updatedPersons) => {
+              setPersons(updatedPersons);
 
             setActionMessage(`Updated ${newName}`);
             setTimeout(() => {
@@ -67,32 +76,45 @@ const App = () => {
             setNewName("");
             setNewNum("");
           })
+        })
 
           .catch((error) => {
             console.error("Error updating person:", error);
+            setActionMessage(
+              `Failed to update ${newName}. Please try again.`
+            );
+            setTimeout(() => {
+              setActionMessage("");
+            }, 5000);
           });
       }
     } else {
       const nameObject = {
-        id: persons.length + 1,
-        // date: new Date().toISOString(),
         name: newName,
         number: newNum,
       };
 
       personsService
         .create(nameObject)
-        .then((newPerson) => {
-          setPersons(persons.concat(newPerson));
-          setActionMessage(`Created ${newName}`);
-          setTimeout(() => {
-            setActionMessage("");
-          }, 5000);
-          setNewName("");
-          setNewNum("");
+        .then(() => {
+          personsService.getAll().then((updatedPersons) => {
+            setPersons(updatedPersons);
+            setActionMessage(`Created ${newName}`);
+            setTimeout(() => {
+              setActionMessage("");
+            }, 5000);
+            setNewName("");
+            setNewNum("");
+          });
         })
         .catch((error) => {
           console.error("Error adding person:", error);
+          setActionMessage(
+            ` Failed to add ${newName}. Please try again.`
+          );
+          setTimeout(() => {
+            setActionMessage("");
+          }, 5000);
         });
     }
   };
@@ -111,8 +133,6 @@ const App = () => {
     setFilter(event.target.value);
     console.log("Filter value after update:", event.target.value);
   };
-  // console.log("Current filter:", filter);
-  // console.log("Persons array:", persons);
 
   const personsToShow = persons.filter((person) =>
     person.name.toLowerCase().includes(filter.toLowerCase())
@@ -134,7 +154,9 @@ const App = () => {
         />
 
         <div>
-          <button type="submit" className="add">Add</button>
+          <button type="submit" className="add">
+            Add
+          </button>
         </div>
       </form>
       <h1>Numbers</h1>

@@ -12,7 +12,7 @@ code {
     monospace;
 }
 h1 {
-  color: green;
+  color: rgb(213, 36, 95);
   font-style: italic;
 
 }
@@ -37,4 +37,14 @@ button {
 }
 li {
   padding-top: 16px;
+}
+.personsform {
+  display: inline-grid;
+  padding-top: 8px;
+
+}
+
+.filter{
+margin-left: 4px;
+
 }

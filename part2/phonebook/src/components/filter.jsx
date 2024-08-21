@@ -3,7 +3,7 @@ const Filter = ({filter, onFilterChange}) => {
     
     <div>
       filter shown with :
-      <input value={filter} onChange={onFilterChange} />
+      <input className="filter" value={filter} onChange={onFilterChange} />
       
     </div>
     
