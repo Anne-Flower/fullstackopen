@@ -3,15 +3,16 @@ import Person from "./components/person";
 import Filter from "./components/filter";
 import PersonForm from "./components/personForm";
 import personsService from "./services/persons";
+import Notification from "./components/notification";
 
 const App = () => {
   const [persons, setPersons] = useState([]);
   const [newName, setNewName] = useState("");
   const [newNum, setNewNum] = useState("");
   const [filter, setFilter] = useState("");
+  const [actionMessage, setActionMessage] = useState("some message for you");
 
   useEffect(() => {
-    
     personsService
       .getAll()
       .then((response) => {
@@ -22,14 +23,6 @@ const App = () => {
         console.error("Error fetching:", error);
       });
   }, []);
-
-  const handleNumChange = (id) => {
-    const person = persons.find((p) => p.id === id);
-    if (person) {
-      
-    }
-  }
-  
 
   const handleDelete = (id) => {
     const person = persons.find((p) => p.id === id);
@@ -50,7 +43,6 @@ const App = () => {
     }
   };
 
-
   const addAll = (event) => {
     event.preventDefault();
     if (!persons || persons.length === 0) return;
@@ -60,22 +52,29 @@ const App = () => {
         `${newName} is already added, replace the old number with a new one?`
       );
       if (confirmUpdate) {
-        const updatedPerson = { ...nameExists, number: newNum }; 
+        const updatedPerson = { ...nameExists, number: newNum };
         personsService
-        .update(nameExists.id, updatedPerson)
-        .then((returnedPerson) => {
-          setPersons(persons.map((p) => p.id !== nameExists.id ? p : returnedPerson));
-          setNewName("");
-          setNewNum("");
-        })
-        .catch((error) => {
-          console.error("Error updating person:", error);
-        });
-    }     
+          .update(nameExists.id, updatedPerson)
+          .then((returnedPerson) => {
+            setPersons(
+              persons.map((p) => (p.id !== nameExists.id ? p : returnedPerson))
+            );
 
+            setActionMessage(`Updated ${newName}`);
+            setTimeout(() => {
+              setActionMessage("");
+            }, 5000);
+            setNewName("");
+            setNewNum("");
+          })
+
+          .catch((error) => {
+            console.error("Error updating person:", error);
+          });
+      }
     } else {
       const nameObject = {
-        // id: persons.length + 1,
+        id: persons.length + 1,
         // date: new Date().toISOString(),
         name: newName,
         number: newNum,
@@ -85,6 +84,10 @@ const App = () => {
         .create(nameObject)
         .then((newPerson) => {
           setPersons(persons.concat(newPerson));
+          setActionMessage(`Created ${newName}`);
+          setTimeout(() => {
+            setActionMessage("");
+          }, 5000);
           setNewName("");
           setNewNum("");
         })
@@ -117,8 +120,9 @@ const App = () => {
   console.log(filter);
 
   return (
-    <div>
-      <h2>Phonebook</h2>
+    <main>
+      <h1>Phonebook</h1>
+      <Notification message={actionMessage} />
 
       <Filter filter={filter} onFilterChange={handleFilterChange} />
       <form onSubmit={addAll}>
@@ -130,10 +134,10 @@ const App = () => {
         />
 
         <div>
-          <button type="submit">Add</button>
+          <button type="submit" className="add">Add</button>
         </div>
       </form>
-      <h2>Numbers</h2>
+      <h1>Numbers</h1>
       <ul>
         {personsToShow.map((person) => (
           <Person
@@ -143,7 +147,7 @@ const App = () => {
           ></Person>
         ))}
       </ul>
-    </div>
+    </main>
   );
 };
 
