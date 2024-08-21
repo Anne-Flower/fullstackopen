@@ -11,6 +11,7 @@ const App = () => {
   const [filter, setFilter] = useState("");
 
   useEffect(() => {
+    
     personsService
       .getAll()
       .then((response) => {
@@ -21,6 +22,14 @@ const App = () => {
         console.error("Error fetching:", error);
       });
   }, []);
+
+  const handleNumChange = (id) => {
+    const person = persons.find((p) => p.id === id);
+    if (person) {
+      
+    }
+  }
+  
 
   const handleDelete = (id) => {
     const person = persons.find((p) => p.id === id);
@@ -41,12 +50,29 @@ const App = () => {
     }
   };
 
+
   const addAll = (event) => {
     event.preventDefault();
     if (!persons || persons.length === 0) return;
-    const nameExists = persons.some((person) => person.name === newName);
+    const nameExists = persons.find((person) => person.name === newName);
     if (nameExists) {
-      alert(`${newName} is already added`);
+      const confirmUpdate = window.confirm(
+        `${newName} is already added, replace the old number with a new one?`
+      );
+      if (confirmUpdate) {
+        const updatedPerson = { ...nameExists, number: newNum }; 
+        personsService
+        .update(nameExists.id, updatedPerson)
+        .then((returnedPerson) => {
+          setPersons(persons.map((p) => p.id !== nameExists.id ? p : returnedPerson));
+          setNewName("");
+          setNewNum("");
+        })
+        .catch((error) => {
+          console.error("Error updating person:", error);
+        });
+    }     
+
     } else {
       const nameObject = {
         // id: persons.length + 1,
@@ -72,7 +98,7 @@ const App = () => {
     console.log(event.target.value);
     setNewName(event.target.value);
   };
-  const handleNumChange = (event) => {
+  const handleNumChanged = (event) => {
     console.log(event.target.value);
     setNewNum(event.target.value);
   };
@@ -100,7 +126,7 @@ const App = () => {
           newEnterNum={newNum}
           newEnterName={newName}
           onStaffChangeName={handleNameChange}
-          onStaffChangeNum={handleNumChange}
+          onStaffChangeNum={handleNumChanged}
         />
 
         <div>
