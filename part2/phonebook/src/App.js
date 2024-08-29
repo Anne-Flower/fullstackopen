@@ -39,7 +39,7 @@ const App = () => {
           setActionMessage(`Deleted ${person.name}`);
           setTimeout(() => {
             setActionMessage("");
-          }, 5000);
+          }, 10000);
         })
         .catch((error) => {
           console.error("Error deleting person:", error);
@@ -48,7 +48,7 @@ const App = () => {
           );
           setTimeout(() => {
             setActionMessage("");
-          }, 5000);
+          }, 10000);
         });
     }
   };
@@ -69,23 +69,21 @@ const App = () => {
             personsService.getAll().then((updatedPersons) => {
               setPersons(updatedPersons);
 
-            setActionMessage(`Updated ${newName}`);
-            setTimeout(() => {
-              setActionMessage("");
-            }, 5000);
-            setNewName("");
-            setNewNum("");
+              setActionMessage(`Updated ${newName}`);
+              setTimeout(() => {
+                setActionMessage("");
+              }, 10000);
+              setNewName("");
+              setNewNum("");
+            });
           })
-        })
 
           .catch((error) => {
             console.error("Error updating person:", error);
-            setActionMessage(
-              `Failed to update ${newName}. Please try again.`
-            );
+            setActionMessage(`Failed to update ${newName}. Please try again.`);
             setTimeout(() => {
               setActionMessage("");
-            }, 5000);
+            }, 10000);
           });
       }
     } else {
@@ -96,22 +94,15 @@ const App = () => {
 
       personsService
         .create(nameObject)
-        .then(() => {
-          personsService.getAll().then((updatedPersons) => {
-            setPersons(updatedPersons);
-            setActionMessage(`Created ${newName}`);
-            setTimeout(() => {
-              setActionMessage("");
-            }, 5000);
-            setNewName("");
-            setNewNum("");
-          });
+        .then((response) => {
+          setPersons([...persons, response]);
+          setActionMessage(`Added ${response.name}`);
+          setTimeout(() => {
+            setActionMessage("");
+          }, 5000);
         })
         .catch((error) => {
-          console.error("Error adding person:", error);
-          setActionMessage(
-            ` Failed to add ${newName}. Please try again.`
-          );
+          setActionMessage(`Failed to add ${newName}: ${error.error || error}`);
           setTimeout(() => {
             setActionMessage("");
           }, 5000);
