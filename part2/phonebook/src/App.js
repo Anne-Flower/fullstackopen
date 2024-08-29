@@ -79,11 +79,15 @@ const App = () => {
           })
 
           .catch((error) => {
-            console.error("Error updating person:", error);
-            setActionMessage(`Failed to update ${newName}. Please try again.`);
+            console.error("Error adding person:", error.response.data); // Log the backend error
+            setActionMessage(
+              `Failed to add ${newName}: ${
+                error.response.data.error || "Unknown error"
+              }`
+            );
             setTimeout(() => {
               setActionMessage("");
-            }, 10000);
+            }, 5000);
           });
       }
     } else {
