@@ -50,7 +50,7 @@ describe('total likes', () => {
     ]
 
     const result = listHelper.totalLikes(blogs);
-    expect(result).toBe(27)
+    expect(result).toEqual(27)
   })
 
   test('when list is empty, equals zero', () => {
