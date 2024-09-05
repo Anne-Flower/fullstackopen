@@ -14,3 +14,16 @@ test('blogs are returned as json', async () => {
 afterAll(async () => {
   await mongoose.connection.close()
 })
+
+
+test('unique identifier property is named id', async () => {
+  const response = await api.get('/api/blogs')
+
+  response.body.forEach(blog => {
+    expect(blog.id).toBeDefined()
+  })
+})
+
+afterAll(() => {
+  mongoose.connection.close()
+})
