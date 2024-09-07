@@ -62,11 +62,13 @@ blogsRouter.delete("/:id", (request, response, next) => {
 
 // PUT
 blogsRouter.put("/:id", (request, response, next) => {
-  const body = request.body
+  const body = request.body;
 
   const updatedBlog = {
-    content: body.content,
-    important: body.important,
+    title: body.title,
+    author: body.author,
+    url: body.url,
+    likes: body.likes || 0,
   };
 
   Blog.findByIdAndUpdate(request.params.id, updatedBlog, { new: true })
