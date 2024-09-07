@@ -26,6 +26,11 @@ blogsRouter.post("/", async (request, response, next) => {
 
 const body = request.body;
 
+if (!body.title || !body.url) {
+  return response.status(400).json()
+}
+
+
 const newBlog = new Blog({
   title: body.title,
   author: body.author,

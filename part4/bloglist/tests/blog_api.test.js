@@ -64,10 +64,42 @@ test('if likes property is missing i will return 0', async () => {
   .expect(201)
   .expect('Content-Type', /application\/json/)
   
-  
-  expect(response.body.likes).toBe(0)
-  
+  expect(response.body.likes).toBe(0)  
 })
+
+test('blog without title is not added', async () => {
+  const newBlog = {
+    author: 'Author without title',
+    url: 'http://notitle.com',
+    likes: 5
+  }
+  
+  await api
+  .post('/api/blogs')
+  .send(newBlog)
+  .expect(400)
+  
+  const blogsAtEnd = await helper.blogsInDb()
+  expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length)  
+})
+
+test('blog without url is not added', async () => {
+  const newBlog = {
+    title: 'New Blog without url',
+    author: 'Author without url',
+    likes: 5
+  }
+  
+  await api
+  .post('/api/blogs')
+  .send(newBlog)
+  .expect(400)
+  
+  const blogsAtEnd = await helper.blogsInDb()
+  expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length)  
+})
+
+
 
 
 afterAll(async () => {
