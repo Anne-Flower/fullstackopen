@@ -22,22 +22,33 @@ blogsRouter.get("/:id", (request, response, next) => {
 });
 
 // POST
-blogsRouter.post("/", (request, response, next) => {
-  const body = request.body
+blogsRouter.post("/", async (request, response, next) => {
 
-  const newBlog = new Blog({
-    title: body.title,
-    author: body.author,
-    url: body.url,
-    likes: body.likes || 0,
-  });
+const body = request.body;
 
-  newBlog
-    .save()
-    .then((savedBlog) => {
-      response.json(savedBlog);
-    })
-    .catch((error) => next(error))
+const newBlog = new Blog({
+  title: body.title,
+  author: body.author,
+  url: body.url,
+  likes: body.likes || 0,
+});
+
+try {
+  const savedBlog = await newBlog.save();
+  response.status(201).json(savedBlog);
+} catch (error) {
+  next(error);
+}
+})
+
+// DELETE
+blogsRouter.delete("/:id", async (request, response, next) => {
+try {
+  await Blog.findByIdAndDelete(request.params.id);
+  response.status(204).end();
+} catch (error) {
+  next(error);
+}
 });
 
 // DELETE
