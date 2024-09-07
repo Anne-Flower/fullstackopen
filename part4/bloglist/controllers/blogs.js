@@ -52,18 +52,10 @@ try {
   await Blog.findByIdAndDelete(request.params.id);
   response.status(204).end();
 } catch (error) {
-  next(error);
+  next(error)
 }
-});
+})
 
-// DELETE
-blogsRouter.delete("/:id", (request, response, next) => {
-  Blog.findByIdAndDelete(request.params.id)
-    .then(() => {
-      response.status(204).end()
-    })
-    .catch((error) => next(error))
-});
 
 // PUT
 blogsRouter.put("/:id", (request, response, next) => {
