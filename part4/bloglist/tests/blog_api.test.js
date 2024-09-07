@@ -11,7 +11,7 @@ beforeEach(async () => {
   await Blog.insertMany(helper.initialBlogs);
 });
 
-
+describe('when there are initially some blogs saved', () => {
 test('blogs are returned as json', async () => {
   await api
     .get('/api/blogs')
@@ -27,6 +27,7 @@ test('unique identifier property is named id', async () => {
   response.body.forEach(blog => {
     expect(blog.id).toBeDefined()
   })
+})
 })
 
 
@@ -67,6 +68,8 @@ test('if likes property is missing i will return 0', async () => {
   expect(response.body.likes).toBe(0)  
 })
 
+describe('when something is missing', () => {
+
 test('blog without title is not added', async () => {
   const newBlog = {
     author: 'Author without title',
@@ -97,6 +100,7 @@ test('blog without url is not added', async () => {
   
   const blogsAtEnd = await helper.blogsInDb()
   expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length)  
+})
 })
 
 describe('deletion of a blog', () => {
