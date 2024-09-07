@@ -120,6 +120,23 @@ describe('deletion of a blog', () => {
   })
 })
 
+describe('update', () => {
+  test('succeeds to update likes', async () => {
+    const blogsAtStart = await helper.blogsInDb()
+    const blogToUpdate = blogsAtStart[0]
+
+    const updatedLikes = { likes: 10 };
+
+    const response = await api
+      .put(`/api/blogs/${blogToUpdate.id}`)
+      .send(updatedLikes)
+      .expect(200)
+      .expect('Content-Type', /application\/json/);
+
+    expect(response.body.likes).toBe(10)
+  })
+})
+
 
 
 
